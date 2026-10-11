@@ -479,8 +479,7 @@
   function renderHeart() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    // 上下留白更明显，减少拥挤
-    const count = 34;
+    const count = 45; //爱心轮廓固定45个
     const scale = Math.min(w,h)/30;
     const cx = w/2; const cy = h/2;
 
@@ -511,8 +510,7 @@
   function burstFullScreen() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    // 结尾卡片也减少，保留背景烟花区域
-    const count = 46;
+    const count = 55; //全屏弹窗55个
 
     const centerLeft = w / 2 - 170;
     const centerRight = w / 2 + 170;
