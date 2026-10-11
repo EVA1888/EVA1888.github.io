@@ -81,21 +81,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: #c2185b;
     padding: 4px 6px;
     text-align: center;
+    line-height: 1.4;
+    word-break: break-word;
   }
   .big-win {
     position: absolute;
     left: 50%;
-    top: 42%;
-    width: 280px;
-    height: 170px;
-    border-radius: 18px;
+    top: 44%;
+    width: 240px;
+    height: 140px;
+    border-radius: 16px;
     background: #fff;
-    box-shadow: 0 25px 80px rgba(255, 105, 135, 0.75);
+    box-shadow: 0 20px 60px rgba(255, 105, 135, 0.65);
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.3);
     transition: all 0.6s cubic-bezier(0.2, 1.4, 0.4, 1);
@@ -103,7 +105,7 @@
     z-index: 50;
   }
   .big-win .win-title {
-    height: 28px;
+    height: 26px;
     background: linear-gradient(90deg, #ffb6c1, #ffd700, #ffb6c1);
   }
   .big-win .dot {
@@ -112,8 +114,8 @@
     box-shadow: 15px 0 0 #febc2e, 30px 0 0 #28c840;
   }
   .big-win .win-body {
-    height: calc(100% - 28px);
-    font-size: 24px;
+    height: calc(100% - 26px);
+    font-size: 22px;
     font-weight: 900;
     background: linear-gradient(135deg, #fff0f5, #ffe4ec, #fff7d6);
     color: #d81b60;
@@ -124,11 +126,11 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(0.3);
-    width: 340px;
-    padding: 35px 25px;
-    border-radius: 26px;
+    width: 300px;
+    padding: 28px 22px;
+    border-radius: 24px;
     background: rgba(255, 255, 255, 0.97);
-    box-shadow: 0 30px 100px rgba(255, 215, 0, 0.7);
+    box-shadow: 0 25px 80px rgba(255, 215, 0, 0.6);
     text-align: center;
     opacity: 0;
     transition: all 0.8s cubic-bezier(0.2, 1.5, 0.4, 1);
@@ -136,15 +138,21 @@
     pointer-events: none;
   }
   .final-blessing h1 {
-    font-size: 32px;
+    font-size: 30px;
     color: #d81b60;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     letter-spacing: 6px;
   }
   .final-blessing p {
-    font-size: 17px;
+    font-size: 16px;
     color: #666;
-    margin: 8px 0;
+    margin: 6px 0;
+  }
+  .watermark {
+    margin-top: 12px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(216, 27, 96, 0.22);
   }
   .final-blessing.show {
     opacity: 1;
@@ -186,13 +194,22 @@
 
 <script>
   const blessingTexts = [
+    "龙哥孙嫂新婚快乐",
+    "龙哥孙嫂百年好合",
+    "龙哥孙嫂永结同心",
+    "龙哥孙嫂佳偶天成",
+    "龙哥孙嫂喜乐一生",
+    "龙哥孙嫂白头偕老",
+    "陈龙孙嫂新婚快乐",
+    "陈龙孙嫂百年好合",
+    "陈龙孙嫂永结同心",
+    "陈龙孙嫂良缘永固",
+    "陈龙孙嫂琴瑟和鸣",
+    "陈龙孙嫂甜满余生",
     "龙哥新婚快乐",
     "孙嫂新婚快乐",
-    "龙哥孙嫂新婚快乐",
-    "陈龙新婚快乐",
     "龙哥百年好合",
     "孙嫂百年好合",
-    "龙哥孙嫂百年好合",
     "永结同心",
     "佳偶天成",
     "喜乐相伴",
@@ -205,15 +222,50 @@
     "同心永爱",
     "花好月圆",
     "幸福美满",
-    "恩爱永恒"
+    "恩爱永恒",
+    "天作之合",
+    "鸾凤和鸣",
+    "相濡以沫",
+    "白首同心",
+    "喜结良缘",
+    "百年恩爱",
+    "一生一世",
+    "心心相印",
+    "美满良缘",
+    "永结良缘",
+    "同心同德",
+    "喜乐长安",
+    "福慧双修"
   ];
+
   const softColors = [
     "linear-gradient(135deg,#fff,#ffd6e0)",
-    "linear-gradient(135deg,#fff,#ffe4ec)",
-    "linear-gradient(135deg,#fff,#fff2b8)",
-    "linear-gradient(135deg,#fff,#e4dcff)",
-    "linear-gradient(135deg,#fff,#ffdfc8)"
+    "linear-gradient(135deg,#fff,#ffc9de)",
+    "linear-gradient(135deg,#fff,#ffb8d4)",
+    "linear-gradient(135deg,#fff,#ffa9cb)",
+    "linear-gradient(135deg,#fff,#ff95bf)"
   ];
+
+  // 洗牌算法：避免连续重复
+  function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    // 检查并避免连续两个相同
+    for (let i = 1; i < a.length; i++) {
+      if (a[i] === a[i - 1]) {
+        for (let k = i + 1; k < a.length; k++) {
+          if (a[k] !== a[i - 1]) {
+            [a[i], a[k]] = [a[k], a[i]];
+            break;
+          }
+        }
+      }
+    }
+    return a;
+  }
 
   const rainLayer = document.getElementById("rain");
   function createHeartRain() {
@@ -337,9 +389,67 @@
     const finale = setInterval(()=>{
       launchFirework();
       count++;
-      if(count>35) clearInterval(finale);
-    },90);
+      if(count>20) clearInterval(finale);
+    },120);
     setTimeout(()=>{document.body.classList.remove('shake');},800);
+  }
+
+  function grandFinaleAboveCards() {
+    const winCards = document.querySelectorAll(".win, .big-win, .final-blessing");
+    const positions = [];
+
+    winCards.forEach((card, i) => {
+      if (i % 4 === 0) {
+        const rect = card.getBoundingClientRect();
+        positions.push({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2
+        });
+      }
+    });
+
+    while (positions.length < 6) {
+      positions.push({
+        x: Math.random() * W,
+        y: Math.random() * H * 0.6 + H * 0.2
+      });
+    }
+
+    positions.forEach((pos, i) => {
+      setTimeout(() => {
+        createGrandFirework(pos.x, pos.y);
+      }, i * 420);
+    });
+  }
+
+  function createGrandFirework(x, y) {
+    const count = 70;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement("div");
+      p.style.position = "absolute";
+      p.style.left = x + "px";
+      p.style.top = y + "px";
+      p.style.width = "7px";
+      p.style.height = "7px";
+      p.style.borderRadius = "50%";
+      p.style.background = Math.random() > 0.5 ? "#ffd86b" : "#ff6fa0";
+      p.style.boxShadow = "0 0 12px #ffb347, 0 0 18px #ff6fa0";
+      p.style.pointerEvents = "none";
+      p.style.zIndex = "200";
+      document.body.appendChild(p);
+
+      const angle = (Math.PI * 2 * i) / count;
+      const dist = 100 + Math.random() * 100;
+      const duration = 1100 + Math.random() * 350;
+
+      p.animate([
+        { transform: "translate(-50%, -50%) scale(1)", opacity: 1 },
+        { transform: `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(0.2)`, opacity: 0 }
+      ], {
+        duration: duration,
+        easing: "cubic-bezier(0.1, 0.8, 0.3, 1)"
+      }).onfinish = () => p.remove();
+    }
   }
 
   let heartWindows = [];
@@ -369,16 +479,21 @@
   function renderHeart() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const count = 56;
-    const scale = Math.min(w,h)/28;
+    // 上下留白更明显，减少拥挤
+    const count = 34;
+    const scale = Math.min(w,h)/30;
     const cx = w/2; const cy = h/2;
+
+    // 每轮重新打乱祝福词
+    const shuffled = shuffleArray(blessingTexts);
+
     for(let i=0;i<count;i++){
       const t = (i/count)*Math.PI*2;
       const p = heartPoint(t,scale);
-      const text = blessingTexts[i%blessingTexts.length];
+      const text = shuffled[i % shuffled.length];
       const color = softColors[i%softColors.length];
       const rotate = (Math.random()-0.5)*10;
-      const win = createWindow(text,color, cx+p.x-55, cy+p.y-33, rotate, 200+i*70);
+      const win = createWindow(text,color, cx+p.x-55, cy+p.y-33, rotate, 200+i*90);
       heartWindows.push(win);
     }
   }
@@ -393,24 +508,25 @@
     },300);
   }
 
-  // 避让中心区域：生成结尾弹窗时避开中间白色大卡片
   function burstFullScreen() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const count = 90;
+    // 结尾卡片也减少，保留背景烟花区域
+    const count = 46;
 
-    // 中间白色卡片区域估算
-    const centerLeft = w / 2 - 190;
-    const centerRight = w / 2 + 190;
-    const centerTop = h / 2 - 210;
-    const centerBottom = h / 2 + 210;
+    const centerLeft = w / 2 - 170;
+    const centerRight = w / 2 + 170;
+    const centerTop = h / 2 - 190;
+    const centerBottom = h / 2 + 190;
+
+    // 重新打乱
+    const shuffled = shuffleArray(blessingTexts);
 
     for(let i=0;i<count;i++){
       setTimeout(()=>{
         let left, top;
         let attempts = 0;
 
-        // 随机位置，但不能压到中间白色区域
         do {
           left = Math.random()*(w-120);
           top = Math.random()*(h-80);
@@ -423,12 +539,12 @@
           attempts < 50
         );
 
-        const text = blessingTexts[Math.floor(Math.random()*blessingTexts.length)];
+        const text = shuffled[i % shuffled.length];
         const color = softColors[i%softColors.length];
         const rotate = (Math.random()-0.5)*20;
         const win = createWindow(text,color,left,top,rotate,0);
         finalWindows.push(win);
-      },i*60);
+      },i*85);
     }
   }
 
@@ -440,11 +556,13 @@
       <h1>新婚快乐</h1>
       <p>百年好合 · 永结同心</p>
       <p>佳偶天成 · 喜乐一生</p>
+      <div class="watermark">标弟特供</div>
     `;
     document.body.appendChild(final);
     setTimeout(()=>{
       final.classList.add("show");
       bigFinale();
+      setTimeout(grandFinaleAboveCards, 1200);
     },400);
   }
 
