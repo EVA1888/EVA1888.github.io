@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>🎉龙哥&孙嫂新婚快乐🎉</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #380410 0%, #700b24 40%, #b81c42 100%);
+  }
+  .rain {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .rain span {
+    position: absolute;
+    top: -40px;
+    font-size: 18px;
+    animation: fall linear infinite;
+    opacity: 0.55;
+  }
+  @keyframes fall {
+    0% {transform: translateY(0) rotate(0deg);}
+    100% {transform: translateY(110vh) rotate(360deg);}
+  }
+  #fireworks {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .win {
+    position: absolute;
+    width: 110px;
+    height: 66px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.4) rotate(var(--r, 0deg));
+    transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.2, 1.4, 0.4, 1);
+    z-index: 3;
+  }
+  .win-title {
+    height: 18px;
+    background: linear-gradient(90deg, #f6d6e3, #ffecd2, #ffd6e0);
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 4px;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff5f57;
+    box-shadow: 9px 0 0 #febc2e, 18px 0 0 #28c840;
+  }
+  .win-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c2185b;
+    padding: 4px 6px;
+    text-align: center;
+  }
+  .big-win {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    width: 280px;
+    height: 170px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 25px 80px rgba(255, 105, 135, 0.75);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+    transition: all 0.6s cubic-bezier(0.2, 1.4, 0.4, 1);
+    overflow: hidden;
+    z-index: 50;
+  }
+  .big-win .win-title {
+    height: 28px;
+    background: linear-gradient(90deg, #ffb6c1, #ffd700, #ffb6c1);
+  }
+  .big-win .dot {
+    width: 11px;
+    height: 11px;
+    box-shadow: 15px 0 0 #febc2e, 30px 0 0 #28c840;
+  }
+  .big-win .win-body {
+    height: calc(100% - 28px);
+    font-size: 24px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff0f5, #ffe4ec, #fff7d6);
+    color: #d81b60;
+    letter-spacing: 4px;
+  }
+  .final-blessing {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
+    width: 340px;
+    padding: 35px 25px;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 30px 100px rgba(255, 215, 0, 0.7);
+    text-align: center;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.2, 1.5, 0.4, 1);
+    z-index: 100;
+    pointer-events: none;
+  }
+  .final-blessing h1 {
+    font-size: 32px;
+    color: #d81b60;
+    margin-bottom: 12px;
+    letter-spacing: 6px;
+  }
+  .final-blessing p {
+    font-size: 17px;
+    color: #666;
+    margin: 8px 0;
+  }
+  .final-blessing.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .hint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 22px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+    letter-spacing: 3px;
+    z-index: 10;
+  }
+  @keyframes shake {
+    0%,100% {transform: translate(0,0);}
+    10% {transform: translate(-4px,4px);}
+    20% {transform: translate(4px,-4px);}
+    30% {transform: translate(-4px,-4px);}
+    40% {transform: translate(4px,4px);}
+    50% {transform: translate(-2px,2px);}
+    60% {transform: translate(2px,-2px);}
+    70% {transform: translate(-2px,-2px);}
+    80% {transform: translate(2px,2px);}
+    90% {transform: translate(-1px,1px);}
+  }
+  .shake{
+    animation: shake 0.8s ease-out;
+  }
+</style>
+</head>
+
+<body>
+<canvas id="fireworks"></canvas>
+<div class="rain" id="rain"></div>
+<div class="hint">🎉 龙哥 & 孙嫂 新婚快乐 🎉</div>
+
+<script>
+  const blessingTexts = [
+    "龙哥新婚快乐",
+    "孙嫂新婚快乐",
+    "龙哥孙嫂新婚快乐",
+    "陈龙新婚快乐",
+    "龙哥百年好合",
+    "孙嫂百年好合",
+    "龙哥孙嫂百年好合",
+    "永结同心",
+    "佳偶天成",
+    "喜乐相伴",
+    "白头偕老",
+    "良缘永固",
+    "琴瑟和鸣",
+    "岁岁相依",
+    "甜满余生",
+    "执手偕老",
+    "同心永爱",
+    "花好月圆",
+    "幸福美满",
+    "恩爱永恒"
+  ];
+  const softColors = [
+    "linear-gradient(135deg,#fff,#ffd6e0)",
+    "linear-gradient(135deg,#fff,#ffe4ec)",
+    "linear-gradient(135deg,#fff,#fff2b8)",
+    "linear-gradient(135deg,#fff,#e4dcff)",
+    "linear-gradient(135deg,#fff,#ffdfc8)"
+  ];
+
+  const rainLayer = document.getElementById("rain");
+  function createHeartRain() {
+    const heart = document.createElement("span");
+    heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💕";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (14 + Math.random() * 16) + "px";
+    heart.style.animationDuration = (6 + Math.random() * 6) + "s";
+    heart.style.animationDelay = Math.random() * 2 + "s";
+    heart.style.opacity = 0.4 + Math.random() * 0.4;
+    rainLayer.appendChild(heart);
+    setTimeout(() => heart.remove(), 12000);
+  }
+  setInterval(createHeartRain, 200);
+
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+  let W, H;
+  function resizeCanvas() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  const fireworks = [];
+  const particles = [];
+
+  class Firework {
+    constructor(sx, sy, tx, ty, color) {
+      this.x = sx; this.y = sy; this.sx = sx; this.sy = sy;
+      this.tx = tx; this.ty = ty; this.color = color;
+      this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
+      this.distanceTraveled = 0;
+      this.coordinates = [];
+      this.coordinateCount = 3;
+      while(this.coordinateCount--) this.coordinates.push([this.x,this.y]);
+      this.angle = Math.atan2(ty - sy, tx - sx);
+      this.speed = 2; this.acceleration = 1.04;
+      this.brightness = 50 + Math.random() * 20;
+    }
+    update(index) {
+      this.coordinates.pop(); this.coordinates.unshift([this.x,this.y]);
+      this.speed *= this.acceleration;
+      const vx = Math.cos(this.angle)*this.speed;
+      const vy = Math.sin(this.angle)*this.speed;
+      this.distanceTraveled = Math.hypot(this.x+vx-this.sx, this.y+vy-this.sy);
+      if(this.distanceTraveled >= this.distanceToTarget){
+        createParticles(this.tx, this.ty, this.color);
+        fireworks.splice(index,1);
+      }else{
+        this.x += vx; this.y += vy;
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.moveTo(this.coordinates[this.coordinates.length-1][0], this.coordinates[this.coordinates.length-1][1]);
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = `hsl(${this.color},100%,${this.brightness}%)`;
+      ctx.lineWidth = 2; ctx.stroke();
+    }
+  }
+
+  class Particle {
+    constructor(x,y,color){
+      this.x=x; this.y=y; this.coordinates=[];
+      this.coordinateCount=5;
+      while(this.coordinateCount--) this.coordinates.push([this.x,this.y]);
+      this.angle = Math.random()*Math.PI*2;
+      this.speed = Math.random()*10+1;
+      this.friction=0.95; this.gravity=1;
+      this.color=color; this.alpha=1;
+      this.decay = 0.008+Math.random()*0.012;
+    }
+    update(index) {
+      this.coordinates.pop(); this.coordinates.unshift([this.x,this.y]);
+      this.speed *= this.friction;
+      this.x += Math.cos(this.angle)*this.speed;
+      this.y += Math.sin(this.angle)*this.speed + this.gravity;
+      this.alpha -= this.decay;
+      if(this.alpha <= this.decay) particles.splice(index,1);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.moveTo(this.coordinates[this.coordinates.length-1][0], this.coordinates[this.coordinates.length-1][1]);
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = `hsla(${this.color},100%,60%,${this.alpha})`;
+      ctx.lineWidth = 2; ctx.stroke();
+    }
+  }
+
+  function createParticles(x,y,color){
+    let count=80;
+    while(count--) particles.push(new Particle(x,y,color));
+  }
+
+  function launchFirework(){
+    const sx = W/2;
+    const sy = H;
+    const tx = Math.random()*W;
+    const ty = Math.random()*H/2;
+    const color = Math.floor(Math.random()*360);
+    fireworks.push(new Firework(sx,sy,tx,ty,color));
+  }
+
+  function loop() {
+    requestAnimationFrame(loop);
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation = "lighter";
+    for(let i=fireworks.length-1;i>=0;i--){ fireworks[i].draw(); fireworks[i].update(i); }
+    for(let i=particles.length-1;i>=0;i--){ particles[i].draw(); particles[i].update(i); }
+  }
+  loop();
+  setInterval(launchFirework,650);
+
+  function bigFinale() {
+    document.body.classList.add('shake');
+    let count=0;
+    const finale = setInterval(()=>{
+      launchFirework();
+      count++;
+      if(count>35) clearInterval(finale);
+    },90);
+    setTimeout(()=>{document.body.classList.remove('shake');},800);
+  }
+
+  let heartWindows = [];
+  let finalWindows = [];
+
+  function heartPoint(t, scale) {
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+    return {x:x*scale, y:-y*scale};
+  }
+
+  function createWindow(text,color,left,top,rotate,delay){
+    const win = document.createElement("div");
+    win.className = "win";
+    win.style.background = color;
+    win.style.left = left+"px";
+    win.style.top = top+"px";
+    win.style.setProperty("--r",rotate+"deg");
+    win.innerHTML = `<div class="win-title"><span class="dot"></span></div><div class="win-body">${text}</div>`;
+    document.body.appendChild(win);
+    setTimeout(()=>{
+      win.style.opacity="1"; win.style.transform="scale(1) rotate(0deg)";
+    },delay);
+    return win;
+  }
+
+  function renderHeart() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const count = 56;
+    const scale = Math.min(w,h)/28;
+    const cx = w/2; const cy = h/2;
+    for(let i=0;i<count;i++){
+      const t = (i/count)*Math.PI*2;
+      const p = heartPoint(t,scale);
+      const text = blessingTexts[i%blessingTexts.length];
+      const color = softColors[i%softColors.length];
+      const rotate = (Math.random()-0.5)*10;
+      const win = createWindow(text,color, cx+p.x-55, cy+p.y-33, rotate, 200+i*70);
+      heartWindows.push(win);
+    }
+  }
+
+  function showCenterBigWindow(){
+    const big = document.createElement("div");
+    big.className = "big-win";
+    big.innerHTML = `<div class="win-title"><span class="dot"></span></div><div class="win-body">龙哥 & 孙嫂<br/>新婚快乐</div>`;
+    document.body.appendChild(big);
+    setTimeout(()=>{
+      big.style.opacity="1"; big.style.transform="translate(-50%,-50%) scale(1)";
+    },300);
+  }
+
+  // 避让中心区域：生成结尾弹窗时避开中间白色大卡片
+  function burstFullScreen() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const count = 90;
+
+    // 中间白色卡片区域估算
+    const centerLeft = w / 2 - 190;
+    const centerRight = w / 2 + 190;
+    const centerTop = h / 2 - 210;
+    const centerBottom = h / 2 + 210;
+
+    for(let i=0;i<count;i++){
+      setTimeout(()=>{
+        let left, top;
+        let attempts = 0;
+
+        // 随机位置，但不能压到中间白色区域
+        do {
+          left = Math.random()*(w-120);
+          top = Math.random()*(h-80);
+          attempts++;
+        } while (
+          left + 120 > centerLeft &&
+          left < centerRight &&
+          top + 80 > centerTop &&
+          top < centerBottom &&
+          attempts < 50
+        );
+
+        const text = blessingTexts[Math.floor(Math.random()*blessingTexts.length)];
+        const color = softColors[i%softColors.length];
+        const rotate = (Math.random()-0.5)*20;
+        const win = createWindow(text,color,left,top,rotate,0);
+        finalWindows.push(win);
+      },i*60);
+    }
+  }
+
+  function showFinalBlessing() {
+    const final = document.createElement("div");
+    final.className = "final-blessing";
+    final.innerHTML = `
+      <h1>龙哥 & 孙嫂</h1>
+      <h1>新婚快乐</h1>
+      <p>百年好合 · 永结同心</p>
+      <p>佳偶天成 · 喜乐一生</p>
+    `;
+    document.body.appendChild(final);
+    setTimeout(()=>{
+      final.classList.add("show");
+      bigFinale();
+    },400);
+  }
+
+  function startSequence() {
+    renderHeart();
+    setTimeout(()=>{ showCenterBigWindow(); },4200);
+    setTimeout(()=>{ burstFullScreen(); },6200);
+    setTimeout(()=>{ showFinalBlessing(); },9500);
+  }
+
+  window.addEventListener("resize",()=>{
+    heartWindows.forEach(el=>el.remove());
+    finalWindows.forEach(el=>el.remove());
+    heartWindows=[];finalWindows=[];
+    startSequence();
+  });
+
+  startSequence();
+</script>
+</body>
+</html>
